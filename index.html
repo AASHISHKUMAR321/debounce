@@ -20,7 +20,7 @@
     const input = document.createElement("input");
     input.setAttribute("id", "text");
     input.oninput = (e) => {
-        debounce(getData, 1000);
+        throttle(getData, 1000);
     };
     const button = document.createElement("button");
 
@@ -48,13 +48,25 @@
     };
     let show_div = document.getElementById("show");
 
-    const debounce = (getData, time) => {
-        if (timer) {
-            clearTimeout(timer);
-        }
+    // const debounce = (getData, time) => {
+    //     if (timer) {
+    //         clearTimeout(timer);
+    //     }
 
-        timer = setTimeout(() => {
-            getData();
+    //     timer = setTimeout(() => {
+    //         getData();
+    //     }, time);
+    // };
+
+    const throttle = (getData, time) => {
+        if (timer) {
+            return;
+        }
+        getData();
+        timer = true;
+
+        setTimeout(() => {
+            timer = false;
         }, time);
     };
 
