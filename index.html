@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+</head>
+
+<body>
+    <div id="main"></div>
+    <div id="show"></div>
+</body>
+
+</html>
+
+<script>
+    const input = document.createElement("input");
+    input.setAttribute("id", "text");
+    input.oninput = (e) => {
+        debounce(getData, 1000);
+    };
+    const button = document.createElement("button");
+    button.onclick = () => {};
+    button.innerText = "Search";
+
+    document.getElementById("main").append(input, button);
+
+    const getData = async() => {
+        let inputText = document.getElementById("text").value;
+        if (input.length <= 2) {
+            return false;
+        }
+
+        let url = `http://www.omdbapi.com/?apikey=bf125ab9&s=${inputText}`;
+
+        try {
+            let res = await fetch(url);
+            let data = await res.json();
+            console.log(data);
+            showData(data.Search);
+        } catch (err) {
+            console.log(err);
+        }
+    };
+    let show_div = document.getElementById("show");
+
+    const debounce = (getData, time) => {
+        setTimeout(() => {
+            getData();
+        }, time);
+    };
+
+    const showData = (data) => {
+        if (data == undefined) {
+            return false;
+        }
+
+        show_div.textContent = null;
+        data.map((e) => {
+            let p = document.createElement("p");
+            p.textContent = e.Title;
+            show_div.append(p);
+        });
+    };
+</script>
