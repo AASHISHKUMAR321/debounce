@@ -16,12 +16,14 @@
 </html>
 
 <script>
+    let timer;
     const input = document.createElement("input");
     input.setAttribute("id", "text");
     input.oninput = (e) => {
         debounce(getData, 1000);
     };
     const button = document.createElement("button");
+
     button.onclick = () => {};
     button.innerText = "Search";
 
@@ -47,7 +49,11 @@
     let show_div = document.getElementById("show");
 
     const debounce = (getData, time) => {
-        setTimeout(() => {
+        if (timer) {
+            clearTimeout(timer);
+        }
+
+        timer = setTimeout(() => {
             getData();
         }, time);
     };
